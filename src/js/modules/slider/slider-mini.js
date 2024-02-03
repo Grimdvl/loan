@@ -25,10 +25,23 @@ export default class MiniSlider extends Slider {
     }
 
     nextSlide() {
-        this.container.appendChild(this.slides[0]);
-        this.slides = Array.from(this.container.children);
-        this.decorizeSlides();
-    }    
+        if (this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
+            this.container.appendChild(this.slides[0]);
+            this.container.appendChild(this.slides[1]);
+            this.container.appendChild(this.slides[2]);
+            this.slides = Array.from(this.container.children);
+            this.decorizeSlides();
+        } else if (this.slides[1].tagName == "BUTTON"){
+            this.container.appendChild(this.slides[0]);
+            this.container.appendChild(this.slides[1]);
+            this.slides = Array.from(this.container.children);
+            this.decorizeSlides();
+        } else {
+            this.container.appendChild(this.slides[0]);
+            this.slides = Array.from(this.container.children);
+            this.decorizeSlides();
+        }
+    }
 
     prevSlide() {
         const lastSlide = this.slides[this.slides.length - 1];

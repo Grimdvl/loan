@@ -292,19 +292,23 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
       this.container.appendChild(this.slides[0]);
       this.container.appendChild(this.slides[1]);
       this.container.appendChild(this.slides[2]);
+      this.slides = Array.from(this.container.children);
       this.decorizeSlides();
     } else if (this.slides[1].tagName == "BUTTON") {
       this.container.appendChild(this.slides[0]);
       this.container.appendChild(this.slides[1]);
+      this.slides = Array.from(this.container.children);
       this.decorizeSlides();
     } else {
       this.container.appendChild(this.slides[0]);
+      this.slides = Array.from(this.container.children);
       this.decorizeSlides();
     }
   }
   prevSlide() {
     const lastSlide = this.slides[this.slides.length - 1];
     this.container.insertBefore(lastSlide, this.slides[0]);
+    this.slides = Array.from(this.container.children);
     this.decorizeSlides();
   }
   bindTriggers() {
