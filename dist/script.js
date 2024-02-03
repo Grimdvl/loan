@@ -270,6 +270,7 @@ __webpack_require__.r(__webpack_exports__);
 class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(container, next, prev, activeClass, animate, autoplay) {
     super(container, next, prev, activeClass, animate, autoplay);
+    this.paused = false;
   }
   decorizeSlides() {
     this.slides = Array.from(this.container.children);
@@ -317,6 +318,11 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this.next.addEventListener('click', () => this.nextSlide());
     this.prev.addEventListener('click', () => this.prevSlide());
   }
+  activateAnimation() {
+    if (this.autoplay) {
+      this.paused = setInterval(() => this.nextSlide(), 5000);
+    }
+  }
   init() {
     this.container.style.cssText = `
             display: flex;
@@ -326,9 +332,13 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
         `;
     this.bindTriggers();
     this.decorizeSlides();
-    if (this.autoplay) {
-      setInterval(() => this.nextSlide(), 3000);
-    }
+    this.activateAnimation();
+    this.container.addEventListener('mouseenter', () => {
+      clearInterval(this.paused);
+    });
+    this.container.addEventListener('mouseleave', () => {
+      this.activateAnimation();
+    });
   }
 }
 
