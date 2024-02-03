@@ -6,6 +6,7 @@ export default class MiniSlider extends Slider {
     }
 
     decorizeSlides() {
+        this.slides = Array.from(this.container.children);
         this.slides.forEach(slide => {
             slide.classList.remove(this.activeClass);
             if (this.animate) {
@@ -24,32 +25,32 @@ export default class MiniSlider extends Slider {
         }
     }
 
-    nextSlide() {
+    nextSlide() {        
         if (this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
             this.container.appendChild(this.slides[0]);
             this.container.appendChild(this.slides[1]);
             this.container.appendChild(this.slides[2]);
-            this.slides = Array.from(this.container.children);
             this.decorizeSlides();
         } else if (this.slides[1].tagName == "BUTTON"){
             this.container.appendChild(this.slides[0]);
             this.container.appendChild(this.slides[1]);
-            this.slides = Array.from(this.container.children);
             this.decorizeSlides();
         } else {
             this.container.appendChild(this.slides[0]);
-            this.slides = Array.from(this.container.children);
             this.decorizeSlides();
         }
     }
 
     prevSlide() {
-        const lastSlide = this.slides[this.slides.length - 1];
-        this.container.insertBefore(lastSlide, this.slides[0]);
-        this.slides = Array.from(this.container.children);
-        this.decorizeSlides();
+        for (let i = this.slides.length - 1; i > 0; i--) {
+            if (this.slides[i].tagName !== "BUTTON") {
+                let active = this.slides[i];
+                this.container.insertBefore(active, this.slides[0]);
+                this.decorizeSlides();
+                break;
+            }
+        }
     }
-    
 
     bindTriggers() {
         this.next.addEventListener('click', () => this.nextSlide());
@@ -68,7 +69,7 @@ export default class MiniSlider extends Slider {
         this.decorizeSlides();
 
         if (this.autoplay) {
-            setInterval(() => this.nextSlide(), 5000);
+            setInterval(() => this.nextSlide(), 3000);
         }
     }
 }

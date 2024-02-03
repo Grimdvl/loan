@@ -272,6 +272,7 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     super(container, next, prev, activeClass, animate, autoplay);
   }
   decorizeSlides() {
+    this.slides = Array.from(this.container.children);
     this.slides.forEach(slide => {
       slide.classList.remove(this.activeClass);
       if (this.animate) {
@@ -292,24 +293,25 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
       this.container.appendChild(this.slides[0]);
       this.container.appendChild(this.slides[1]);
       this.container.appendChild(this.slides[2]);
-      this.slides = Array.from(this.container.children);
       this.decorizeSlides();
     } else if (this.slides[1].tagName == "BUTTON") {
       this.container.appendChild(this.slides[0]);
       this.container.appendChild(this.slides[1]);
-      this.slides = Array.from(this.container.children);
       this.decorizeSlides();
     } else {
       this.container.appendChild(this.slides[0]);
-      this.slides = Array.from(this.container.children);
       this.decorizeSlides();
     }
   }
   prevSlide() {
-    const lastSlide = this.slides[this.slides.length - 1];
-    this.container.insertBefore(lastSlide, this.slides[0]);
-    this.slides = Array.from(this.container.children);
-    this.decorizeSlides();
+    for (let i = this.slides.length - 1; i > 0; i--) {
+      if (this.slides[i].tagName !== "BUTTON") {
+        let active = this.slides[i];
+        this.container.insertBefore(active, this.slides[0]);
+        this.decorizeSlides();
+        break;
+      }
+    }
   }
   bindTriggers() {
     this.next.addEventListener('click', () => this.nextSlide());
@@ -325,7 +327,7 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this.bindTriggers();
     this.decorizeSlides();
     if (this.autoplay) {
-      setInterval(() => this.nextSlide(), 5000);
+      setInterval(() => this.nextSlide(), 3000);
     }
   }
 }
